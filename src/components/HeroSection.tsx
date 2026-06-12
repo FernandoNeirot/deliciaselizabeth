@@ -78,7 +78,7 @@ const HeroSection = () => {
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0">
-              Creamos tortas, cupcakes y postres únicos para celebrar cada ocasión. 
+              Creamos tortas, muffins y postres únicos para celebrar cada ocasión.
               Ingredientes frescos, diseños personalizados y sabor inigualable.
             </p>
 

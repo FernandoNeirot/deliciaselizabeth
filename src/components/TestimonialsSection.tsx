@@ -25,7 +25,7 @@ const staticTestimonials: DisplayTestimonial[] = [
     name: "Lucía Fernández",
     initials: "LF",
     rating: 5,
-    text: "Pedí cupcakes para el baby shower de mi hermana y fueron un éxito total. Hermosos y deliciosos. Ya es mi tortera de confianza.",
+    text: "Pedí muffins para el baby shower de mi hermana y fueron un éxito total. Hermosos y deliciosos. Ya es mi tortera de confianza.",
   },
   {
     name: "Carolina Pérez",

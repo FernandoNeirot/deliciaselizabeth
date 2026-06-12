@@ -6,7 +6,7 @@ export const SITE_LOCALE = "es_AR";
 export const DEFAULT_KEYWORDS = [
   "pastelería artesanal",
   "tortas personalizadas",
-  "cupcakes",
+  "muffins",
   "postres",
   "Avellaneda",
   "Buenos Aires",

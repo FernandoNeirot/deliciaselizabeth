@@ -13,11 +13,11 @@ const products = [
   },
   {
     id: "2",
-    name: "Cupcakes Surtidos",
-    description: "Set de 6 cupcakes con diferentes sabores: chocolate, vainilla, fresa y más. Decorados con amor.",
+    name: "Muffins Surtidos",
+    description: "Set de 6 muffins con diferentes sabores: chocolate, vainilla, fresa y más. Decorados con amor.",
     price: "$25",
     image: "/assets/product-cupcakes.webp",
-    category: "Cupcakes",
+    category: "Muffin",
   },
   {
     id: "3",
@@ -33,7 +33,7 @@ const products = [
     description: "Delicados macarons en colores pastel. Caja de 12 unidades con sabores variados.",
     price: "$35",
     image: "/assets/product-macarons.webp",
-    category: "Cupcakes",
+    category: "Muffin",
   },
   {
     id: "5",

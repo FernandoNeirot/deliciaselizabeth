@@ -23,12 +23,12 @@ export const products: Product[] = [
   },
   {
     id: "2",
-    name: "Cupcakes Surtidos",
+    name: "Muffins Surtidos",
     description:
-      "Set de 6 cupcakes con diferentes sabores: chocolate, vainilla, fresa y más. Decorados con amor.",
+      "Set de 6 muffins con diferentes sabores: chocolate, vainilla, fresa y más. Decorados con amor.",
     price: "$25",
     image: "/assets/product-cupcakes.webp",
-    category: "Cupcakes",
+    category: "Muffin",
   },
   {
     id: "3",
@@ -41,8 +41,8 @@ export const products: Product[] = [
   },
   {
     id: "7",
-    name: "Mini Chocotorta con Cupcakes",
-    description: "Deliciosa mini chocotorta acompañada de 5 cupcakes temáticos decorados a mano.",
+    name: "Mini Chocotorta con Muffins",
+    description: "Deliciosa mini chocotorta acompañada de 5 muffins temáticos decorados a mano.",
     price: "",
     image: "/assets/product-chocotorta.webp",
     category: "Tortas",

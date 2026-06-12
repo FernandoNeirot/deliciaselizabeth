@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s | Delicias Elizabeth",
   },
   description:
-    "Pastelería artesanal hecha con amor. Tortas, cupcakes y postres personalizados para tus momentos especiales en Avellaneda, Buenos Aires.",
+    "Pastelería artesanal hecha con amor. Tortas, muffins y postres personalizados para tus momentos especiales en Avellaneda, Buenos Aires.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   openGraph: {
     type: "website",

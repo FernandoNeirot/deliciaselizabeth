@@ -45,7 +45,7 @@ const features = [
 const baseImages = [
   { src: about1, alt: "Torta de golosinas colorida" },
   { src: about2, alt: "Torta de primera comunión" },
-  { src: about3, alt: "Torta temática Tauro con cupcakes" },
+  { src: about3, alt: "Torta temática Tauro con muffins" },
   { src: about4, alt: "Torta temática Bob Esponja" },
 ];
 

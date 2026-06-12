@@ -39,7 +39,7 @@ import { uploadProductImage } from "@/serverActions/uploadImage";
 import { slugify } from "@/lib/utils";
 import type { Product } from "@/data/products";
 
-const CATEGORIES = ["Tortas", "Desayunos", "Tartas", "Cupcakes"];
+const CATEGORIES = ["Tortas", "Desayunos", "Tartas", "Muffin"];
 
 function AdminLoader({ label }: { label: string }) {
   return (

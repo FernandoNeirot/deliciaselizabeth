@@ -25,8 +25,8 @@ const categories = [
     color: "bg-olive/10 text-olive",
   },
   {
-    id: "cupcakes",
-    name: "Cupcakes",
+    id: "muffin",
+    name: "Muffin",
     description: "Pequeños bocados de felicidad",
     icon: Cookie,
     color: "bg-accent/10 text-accent",

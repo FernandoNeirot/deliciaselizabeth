@@ -8,19 +8,24 @@ import ProductCard from "@/components/ProductCard";
 import Footer from "@/components/Footer";
 import { useCustomProducts } from "@/hooks/useProducts";
 
+const normalizeCategoryId = (category: string) => {
+  const id = category.toLowerCase();
+  return id === "cupcakes" ? "muffin" : id;
+};
+
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { products, loading, error } = useCustomProducts();
 
   const availableCategories = useMemo(() => {
-    const cats = new Set(products.map((p) => p.category.toLowerCase()));
+    const cats = new Set(products.map((p) => normalizeCategoryId(p.category)));
     return Array.from(cats);
   }, [products]);
 
   const filteredProducts = products.filter((p) => {
     const matchesCategory = selectedCategory
-      ? p.category.toLowerCase() === selectedCategory
+      ? normalizeCategoryId(p.category) === selectedCategory
       : true;
     const q = searchQuery.toLowerCase();
     const matchesSearch = searchQuery
