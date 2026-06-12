@@ -1,18 +1,21 @@
-import type { Metadata } from "next";
 import Products from "@/views/Products";
+import { buildPageMetadata, OG_IMAGES } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = buildPageMetadata({
   title: "Productos",
   description:
     "Explora nuestro catálogo de tortas, cupcakes y postres artesanales. Cada creación es única, hecha con ingredientes premium. Pedí por WhatsApp.",
-  openGraph: {
-    title: "Productos | Delicias Elizabeth",
-    description:
-      "Explora nuestro catálogo de tortas, cupcakes y postres artesanales. Cada creación es única, hecha con ingredientes premium. Pedí por WhatsApp.",
-    url: "/productos",
-    images: ["/og-productos.jpg"],
-  },
-};
+  path: "/productos",
+  image: OG_IMAGES.productos,
+  keywords: [
+    "tortas artesanales",
+    "cupcakes",
+    "postres personalizados",
+    "catálogo pastelería",
+    "Avellaneda",
+    "Delicias Elizabeth",
+  ],
+});
 
 export default function ProductsPage() {
   return <Products />;
