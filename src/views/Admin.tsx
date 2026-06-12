@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useMemo, useEffect, KeyboardEvent } from "react";
-import { Trash2, Upload, Plus, X, Pencil, LogOut, Search } from "lucide-react";
+import { Trash2, Upload, Plus, X, Pencil, LogOut, Search, Loader2 } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -41,6 +41,15 @@ import type { Product } from "@/data/products";
 
 const CATEGORIES = ["Tortas", "Desayunos", "Tartas", "Cupcakes"];
 
+function AdminLoader({ label }: { label: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-3 py-8">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" aria-hidden="true" />
+      <p className="text-sm text-muted-foreground">{label}</p>
+    </div>
+  );
+}
+
 const Admin = () => {
   const { user, loading } = useAuth();
   const { products: custom, loading: productsLoading, error: productsError } = useCustomProducts(Boolean(user));
@@ -60,14 +69,14 @@ const Admin = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [submitting, setSubmitting] = useState(false);
+  const [submittingLabel, setSubmittingLabel] = useState("Guardando producto...");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const ITEMS_PER_PAGE = 5;
 
   const filteredCustom = useMemo(() => {
-    const reversed = [...custom].reverse();
     const q = searchQuery.trim().toLowerCase();
-    if (!q) return reversed;
-    return reversed.filter(
+    if (!q) return custom;
+    return custom.filter(
       (p) =>
         p.name.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
@@ -193,6 +202,7 @@ const Admin = () => {
 
     const finalTags = tagInput.trim() ? [...tags, tagInput.trim().slice(0, 50)] : tags;
     setSubmitting(true);
+    setSubmittingLabel(imageFile ? "Subiendo imagen..." : "Guardando producto...");
 
     try {
       let imageUrl = image;
@@ -208,6 +218,7 @@ const Admin = () => {
         }
 
         imageUrl = uploadResult.data.url;
+        setSubmittingLabel("Guardando producto...");
       }
 
       const payload = {
@@ -230,9 +241,16 @@ const Admin = () => {
       }
       reset();
     } catch (error) {
+      const message = error instanceof Error ? error.message : "No se pudo guardar el producto.";
+      const isBodyLimit =
+        message.toLowerCase().includes("body exceeded") ||
+        message.toLowerCase().includes("bodysizelimit");
+
       toast({
         title: "Error al guardar",
-        description: error instanceof Error ? error.message : "No se pudo guardar el producto.",
+        description: isBodyLimit
+          ? "La imagen es demasiado pesada. Usá una de hasta 5 MB."
+          : message,
         variant: "destructive",
       });
     } finally {
@@ -263,7 +281,7 @@ const Admin = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Cargando...</p>
+        <AdminLoader label="Cargando panel..." />
       </div>
     );
   }
@@ -312,8 +330,18 @@ const Admin = () => {
             {/* Form */}
             <form
               onSubmit={handleSubmit}
-              className="bg-card rounded-2xl p-6 shadow-soft border border-border space-y-5 h-fit"
+              className="relative bg-card rounded-2xl p-6 shadow-soft border border-border space-y-5 h-fit"
             >
+              {submitting && (
+                <div
+                  className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 rounded-2xl bg-background/80 backdrop-blur-sm"
+                  aria-live="polite"
+                  aria-busy="true"
+                >
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" aria-hidden="true" />
+                  <p className="text-sm font-medium text-foreground">{submittingLabel}</p>
+                </div>
+              )}
               <h2 className="text-2xl font-serif font-semibold flex items-center gap-2">
                 {editingId ? <Pencil className="w-5 h-5 text-primary" /> : <Plus className="w-5 h-5 text-primary" />}
                 {editingId ? "Editar Producto" : "Nuevo Producto"}
@@ -460,9 +488,10 @@ const Admin = () => {
               </div>
 
               <div className="flex gap-3">
-                <Button type="submit" variant="hero" className="flex-1" disabled={submitting}>
+                <Button type="submit" variant="hero" className="flex-1 gap-2" disabled={submitting}>
+                  {submitting && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
                   {submitting
-                    ? "Guardando..."
+                    ? submittingLabel
                     : editingId
                       ? "Guardar cambios"
                       : "Agregar Producto"}
@@ -509,8 +538,8 @@ const Admin = () => {
               )}
 
               {productsLoading ? (
-                <div className="bg-card rounded-2xl p-8 text-center border border-dashed border-border">
-                  <p className="text-muted-foreground">Cargando productos...</p>
+                <div className="bg-card rounded-2xl border border-dashed border-border">
+                  <AdminLoader label="Cargando productos..." />
                 </div>
               ) : custom.length === 0 ? (
                 <div className="bg-card rounded-2xl p-8 text-center border border-dashed border-border">
@@ -569,7 +598,11 @@ const Admin = () => {
                             className="text-destructive hover:text-destructive hover:bg-destructive/10"
                             aria-label={`Eliminar ${p.name}`}
                           >
-                            <Trash2 className="w-4 h-4" />
+                            {deletingId === p.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                            ) : (
+                              <Trash2 className="w-4 h-4" />
+                            )}
                           </Button>
                         </div>
                       </div>
