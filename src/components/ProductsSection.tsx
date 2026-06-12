@@ -8,7 +8,7 @@ const products = [
     name: "Torta de Boda Elegante",
     description: "Hermosa torta de tres pisos con rosas naturales y detalles en oro. Perfecta para tu día especial.",
     price: "$150",
-    image: "/assets/product-cake-1.jpg",
+    image: "/assets/product-cake-1.webp",
     category: "Tortas",
   },
   {
@@ -16,7 +16,7 @@ const products = [
     name: "Cupcakes Surtidos",
     description: "Set de 6 cupcakes con diferentes sabores: chocolate, vainilla, fresa y más. Decorados con amor.",
     price: "$25",
-    image: "/assets/product-cupcakes.jpg",
+    image: "/assets/product-cupcakes.webp",
     category: "Cupcakes",
   },
   {
@@ -24,7 +24,7 @@ const products = [
     name: "Torta de Chocolate Premium",
     description: "Capas de bizcocho de chocolate con ganache y frutos rojos frescos. Una explosión de sabor.",
     price: "$65",
-    image: "/assets/product-chocolate-cake.jpg",
+    image: "/assets/product-chocolate-cake.webp",
     category: "Tortas",
   },
   {
@@ -32,7 +32,7 @@ const products = [
     name: "Macarons Franceses",
     description: "Delicados macarons en colores pastel. Caja de 12 unidades con sabores variados.",
     price: "$35",
-    image: "/assets/product-macarons.jpg",
+    image: "/assets/product-macarons.webp",
     category: "Cupcakes",
   },
   {
@@ -40,7 +40,7 @@ const products = [
     name: "Cheesecake de Frutos Rojos",
     description: "Cremoso cheesecake New York style con compota de frutos rojos casera.",
     price: "$45",
-    image: "/assets/product-cheesecake.jpg",
+    image: "/assets/product-cheesecake.webp",
     category: "Tartas",
   },
   {
@@ -48,7 +48,7 @@ const products = [
     name: "Tiramisú Artesanal",
     description: "Tradicional tiramisú italiano con café espresso y mascarpone auténtico.",
     price: "$40",
-    image: "/assets/product-tiramisu.jpg",
+    image: "/assets/product-tiramisu.webp",
     category: "Tartas",
   },
 ];

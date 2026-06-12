@@ -7,11 +7,11 @@ import { Star, Cake, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCustomProducts } from "@/hooks/useProducts";
 
 const baseSlides = [
-  { src: "/assets/hero-bakery.jpg", alt: "Pastelería artesanal - Delicias Elizabeth" },
-  { src: "/assets/product-cake-1.jpg", alt: "Torta de Boda Elegante - Delicias Elizabeth" },
-  { src: "/assets/product-princesas.png", alt: "Torta de Princesas - Delicias Elizabeth" },
-  { src: "/assets/product-pokemon.png", alt: "Torta temática - Delicias Elizabeth" },
-  { src: "/assets/product-mariposas.png", alt: "Torta Mariposas Rosa - Delicias Elizabeth" },
+  { src: "/assets/hero-bakery.webp", alt: "Pastelería artesanal - Delicias Elizabeth" },
+  { src: "/assets/product-cake-1.webp", alt: "Torta de Boda Elegante - Delicias Elizabeth" },
+  { src: "/assets/product-princesas.webp", alt: "Torta de Princesas - Delicias Elizabeth" },
+  { src: "/assets/product-pokemon.webp", alt: "Torta temática - Delicias Elizabeth" },
+  { src: "/assets/product-mariposas.webp", alt: "Torta Mariposas Rosa - Delicias Elizabeth" },
 ];
 
 const shuffle = <T,>(arr: T[]): T[] => {

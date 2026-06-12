@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { useRouter } from "@/lib/router";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone } from "lucide-react";
-const logo = "/assets/logo.png";
+const logo = "/assets/logo.webp";
 
 
 const Header = () => {

@@ -18,7 +18,7 @@ export const products: Product[] = [
     description:
       "Hermosa torta de tres pisos con rosas naturales y detalles en oro. Perfecta para tu día especial.",
     price: "$150",
-    image: "/assets/product-cake-1.jpg",
+    image: "/assets/product-cake-1.webp",
     category: "Tortas",
   },
   {
@@ -27,7 +27,7 @@ export const products: Product[] = [
     description:
       "Set de 6 cupcakes con diferentes sabores: chocolate, vainilla, fresa y más. Decorados con amor.",
     price: "$25",
-    image: "/assets/product-cupcakes.jpg",
+    image: "/assets/product-cupcakes.webp",
     category: "Cupcakes",
   },
   {
@@ -36,7 +36,7 @@ export const products: Product[] = [
     description:
       "Capas de bizcocho de chocolate con ganache y frutos rojos frescos. Una explosión de sabor.",
     price: "$65",
-    image: "/assets/product-chocolate-cake.jpg",
+    image: "/assets/product-chocolate-cake.webp",
     category: "Tortas",
   },
   {
@@ -44,7 +44,7 @@ export const products: Product[] = [
     name: "Mini Chocotorta con Cupcakes",
     description: "Deliciosa mini chocotorta acompañada de 5 cupcakes temáticos decorados a mano.",
     price: "",
-    image: "/assets/product-chocotorta.png",
+    image: "/assets/product-chocotorta.webp",
     category: "Tortas",
   },
   {
@@ -53,7 +53,7 @@ export const products: Product[] = [
     description:
       "Exquisita tarta de frutas frescas con kiwi, frutillas, duraznos y arándanos sobre crema pastelera.",
     price: "",
-    image: "/assets/product-frutal.png",
+    image: "/assets/product-frutal.webp",
     category: "Tortas",
   },
   {
@@ -62,7 +62,7 @@ export const products: Product[] = [
     description:
       "Hermosa torta temática de princesas Disney con decoración en fondant y detalles artesanales.",
     price: "",
-    image: "/assets/product-princesas.png",
+    image: "/assets/product-princesas.webp",
     category: "Tortas",
   },
   {
@@ -71,7 +71,7 @@ export const products: Product[] = [
     description:
       "Tarta con base crocante rellena de crema pastelera y decorada con kiwi, frutillas, duraznos y arándanos.",
     price: "",
-    image: "/assets/product-frutal2.png",
+    image: "/assets/product-frutal2.webp",
     category: "Tartas",
   },
   {
@@ -79,7 +79,7 @@ export const products: Product[] = [
     name: "Tarta de Membrillo",
     description: "Clásica tarta enrejada rellena de dulce de membrillo casero con masa quebrada artesanal.",
     price: "",
-    image: "/assets/product-membrillo.png",
+    image: "/assets/product-membrillo.webp",
     category: "Tartas",
   },
   {
@@ -88,7 +88,7 @@ export const products: Product[] = [
     description:
       "Divertida torta cubierta de golosinas, chocolates, paletas y confites. Ideal para cumpleaños infantiles.",
     price: "",
-    image: "/assets/product-golosinas2.png",
+    image: "/assets/product-golosinas2.webp",
     category: "Tortas",
   },
   {
@@ -97,7 +97,7 @@ export const products: Product[] = [
     description:
       "Elegante torta de chocolate con glaseado oscuro y detalles brillantes. Perfecta para celebraciones especiales.",
     price: "",
-    image: "/assets/product-aries.png",
+    image: "/assets/product-aries.webp",
     category: "Tortas",
   },
   {
@@ -106,7 +106,7 @@ export const products: Product[] = [
     description:
       "Delicada torta rosa decorada con mariposas de azúcar y perlitas. Perfecta para cumpleaños y baby showers.",
     price: "",
-    image: "/assets/product-mariposas.png",
+    image: "/assets/product-mariposas.webp",
     category: "Tortas",
   },
   {
@@ -114,7 +114,7 @@ export const products: Product[] = [
     name: "Torta Temática Infantil",
     description: "Torta personalizada con temática a elección, decoración en crema y topper artesanal.",
     price: "",
-    image: "/assets/product-tiktok.png",
+    image: "/assets/product-tiktok.webp",
     category: "Tortas",
   },
   {
@@ -123,7 +123,7 @@ export const products: Product[] = [
     description:
       "Torta temática con personajes animados y decoración personalizada. Ideal para cumpleaños infantiles.",
     price: "",
-    image: "/assets/product-pokemon.png",
+    image: "/assets/product-pokemon.webp",
     category: "Tortas",
   },
   {
@@ -132,7 +132,7 @@ export const products: Product[] = [
     description:
       "Torta personalizada para eventos corporativos y aniversarios de marca. Diseño a medida con logo incluido.",
     price: "",
-    image: "/assets/product-secondlife.png",
+    image: "/assets/product-secondlife.webp",
     category: "Tortas",
   },
   {
@@ -140,7 +140,7 @@ export const products: Product[] = [
     name: "Torta Temática Rosa",
     description: "Colorida torta temática con decoración en crema rosa y toppers personalizados.",
     price: "",
-    image: "/assets/product-huntrix.png",
+    image: "/assets/product-huntrix.webp",
     category: "Tortas",
   },
   {
@@ -149,7 +149,7 @@ export const products: Product[] = [
     description:
       "Original torta decorada con temática especial para celebraciones de adultos. Diseño único y personalizado.",
     price: "",
-    image: "/assets/product-vino.png",
+    image: "/assets/product-vino.webp",
     category: "Tortas",
   },
 ];

@@ -20,7 +20,7 @@ const InstagramIcon = ({ className }: { className?: string }) => (
     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
   </svg>
 );
-const logo = "/assets/logo.png";
+const logo = "/assets/logo.webp";
 
 const Footer = () => {
   return (

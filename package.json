@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "create-admin": "node scripts/create-admin-user.mjs",
-    "deploy:rules": "node scripts/deploy-firebase-rules.mjs"
+    "deploy:rules": "node scripts/deploy-firebase-rules.mjs",
+    "optimize:assets": "node scripts/optimize-assets.mjs",
+    "generate:favicon": "node scripts/generate-favicon.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -74,6 +76,7 @@
     "firebase-admin": "^13.10.0",
     "postcss": "^8.5.15",
     "tailwindcss": "^3.4.19",
+    "to-ico": "^1.1.5",
     "typescript": "^5"
   }
 }

@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { getDeliveryLink, submitReview } from "@/services/reviewService";
 import { products } from "@/data/products";
 
-const logo = "/assets/logo.png";
+const logo = "/assets/logo.webp";
 
 const RateDelivery = () => {
   const { id } = useParams<{ id: string }>();

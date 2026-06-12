@@ -5,10 +5,10 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useCustomProducts } from "@/hooks/useProducts";
 import { useEffect, useState } from "react";
 
-const about1 = "/assets/about-1.png";
-const about2 = "/assets/about-2.png";
-const about3 = "/assets/about-3.png";
-const about4 = "/assets/about-4.png";
+const about1 = "/assets/about-1.webp";
+const about2 = "/assets/about-2.webp";
+const about3 = "/assets/about-3.webp";
+const about4 = "/assets/about-4.webp";
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
