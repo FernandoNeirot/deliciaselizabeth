@@ -9,22 +9,23 @@ import {
   type DocumentData,
   type Unsubscribe,
 } from "firebase/firestore";
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
 import type { Product } from "@/data/products";
 import {
-  getFirebaseStorage,
   getFirestoreDb,
   isFirebaseConfigured,
   PRODUCTS_COLLECTION,
-  PRODUCTS_STORAGE_PREFIX,
 } from "@/lib/firebase/client";
 
-export type ProductInput = Omit<Product, "id">;
+export type ProductInput = Omit<Product, "id" | "createdAt">;
+
+function parseTimestamp(value: unknown): string | undefined {
+  if (!value) return undefined;
+  if (typeof value === "string") return value;
+  if (typeof value === "object" && value !== null && "toDate" in value) {
+    return (value as { toDate: () => Date }).toDate().toISOString();
+  }
+  return undefined;
+}
 
 function docToProduct(id: string, data: DocumentData): Product {
   return {
@@ -37,42 +38,16 @@ function docToProduct(id: string, data: DocumentData): Product {
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     useInHero: Boolean(data.useInHero),
     useInAbout: Boolean(data.useInAbout),
+    createdAt: parseTimestamp(data.createdAt),
   };
 }
 
-function isDataUrl(value: string): boolean {
-  return value.startsWith("data:");
-}
-
-async function dataUrlToBlob(dataUrl: string): Promise<Blob> {
-  const response = await fetch(dataUrl);
-  return response.blob();
-}
-
-async function uploadProductImage(productId: string, image: string): Promise<string> {
-  if (!isDataUrl(image)) return image;
-
-  const blob = await dataUrlToBlob(image);
-  const extension = blob.type.includes("png") ? "png" : "jpg";
-  const storageRef = ref(
-    getFirebaseStorage(),
-    `${PRODUCTS_STORAGE_PREFIX}/${productId}/cover.${extension}`,
-  );
-
-  await uploadBytes(storageRef, blob, { contentType: blob.type || "image/jpeg" });
-  return getDownloadURL(storageRef);
-}
-
-async function deleteProductImages(productId: string): Promise<void> {
-  for (const extension of ["jpg", "png", "webp"]) {
-    try {
-      await deleteObject(
-        ref(getFirebaseStorage(), `${PRODUCTS_STORAGE_PREFIX}/${productId}/cover.${extension}`),
-      );
-    } catch {
-      /* ignore missing files */
-    }
-  }
+function sortByNewest(products: Product[]): Product[] {
+  return [...products].sort((a, b) => {
+    const aTime = a.createdAt ? Date.parse(a.createdAt) : 0;
+    const bTime = b.createdAt ? Date.parse(b.createdAt) : 0;
+    return bTime - aTime;
+  });
 }
 
 export function subscribeToProducts(
@@ -91,10 +66,7 @@ export function subscribeToProducts(
   return onSnapshot(
     collection(getFirestoreDb(), PRODUCTS_COLLECTION),
     (snapshot) => {
-      const products = snapshot.docs
-        .map((item) => docToProduct(item.id, item.data()))
-        .sort((a, b) => a.name.localeCompare(b.name, "es"));
-      onData(products);
+      onData(sortByNewest(snapshot.docs.map((item) => docToProduct(item.id, item.data()))));
     },
     (error) => {
       onError?.(error);
@@ -107,11 +79,15 @@ export async function createProduct(input: ProductInput): Promise<Product> {
     throw new Error("Firebase no está configurado.");
   }
 
+  if (!input.image) {
+    throw new Error("La imagen del producto es obligatoria.");
+  }
+
   const docRef = await addDoc(collection(getFirestoreDb(), PRODUCTS_COLLECTION), {
     name: input.name,
     description: input.description,
     price: input.price,
-    image: "",
+    image: input.image,
     category: input.category,
     tags: input.tags ?? [],
     useInHero: input.useInHero ?? false,
@@ -120,38 +96,22 @@ export async function createProduct(input: ProductInput): Promise<Product> {
     updatedAt: serverTimestamp(),
   });
 
-  const imageUrl = await uploadProductImage(docRef.id, input.image);
-
-  await updateDoc(docRef, {
-    image: imageUrl,
-    updatedAt: serverTimestamp(),
-  });
-
   return {
     id: docRef.id,
     ...input,
-    image: imageUrl,
   };
 }
 
-export async function updateProduct(
-  id: string,
-  input: ProductInput,
-  previousImage?: string,
-): Promise<Product> {
-  const imageUrl = isDataUrl(input.image)
-    ? await uploadProductImage(id, input.image)
-    : input.image;
-
-  if (isDataUrl(input.image) && previousImage) {
-    await deleteProductImages(id);
+export async function updateProduct(id: string, input: ProductInput): Promise<Product> {
+  if (!input.image) {
+    throw new Error("La imagen del producto es obligatoria.");
   }
 
   await updateDoc(doc(getFirestoreDb(), PRODUCTS_COLLECTION, id), {
     name: input.name,
     description: input.description,
     price: input.price,
-    image: imageUrl,
+    image: input.image,
     category: input.category,
     tags: input.tags ?? [],
     useInHero: input.useInHero ?? false,
@@ -162,11 +122,9 @@ export async function updateProduct(
   return {
     id,
     ...input,
-    image: imageUrl,
   };
 }
 
 export async function deleteProduct(id: string): Promise<void> {
-  await deleteProductImages(id);
   await deleteDoc(doc(getFirestoreDb(), PRODUCTS_COLLECTION, id));
 }

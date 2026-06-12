@@ -35,25 +35,28 @@ import {
   updateCustomProduct,
   useCustomProducts,
 } from "@/hooks/useProducts";
+import { uploadProductImage } from "@/serverActions/uploadImage";
+import { slugify } from "@/lib/utils";
 import type { Product } from "@/data/products";
 
 const CATEGORIES = ["Tortas", "Desayunos", "Tartas", "Cupcakes"];
 
 const Admin = () => {
   const { user, loading } = useAuth();
-  const { products: custom, loading: productsLoading, error: productsError } = useCustomProducts();
+  const { products: custom, loading: productsLoading, error: productsError } = useCustomProducts(Boolean(user));
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Tortas");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [useInHero, setUseInHero] = useState(false);
   const [useInAbout, setUseInAbout] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editingImage, setEditingImage] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [submitting, setSubmitting] = useState(false);
@@ -105,7 +108,6 @@ const Admin = () => {
 
   const startEdit = (p: Product) => {
     setEditingId(p.id);
-    setEditingImage(p.image);
     setName(p.name);
     setDescription(p.description);
     setCategory(p.category);
@@ -115,6 +117,9 @@ const Admin = () => {
     setTagInput("");
     setUseInHero(!!p.useInHero);
     setUseInAbout(!!p.useInAbout);
+    setImage(p.image);
+    setImageFile(null);
+    setImagePreview("");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -138,38 +143,46 @@ const Admin = () => {
 
   const removeTag = (t: string) => setTags((prev) => prev.filter((x) => x !== t));
 
+  const clearImagePreview = () => {
+    if (imagePreview.startsWith("blob:")) {
+      URL.revokeObjectURL(imagePreview);
+    }
+    setImagePreview("");
+  };
+
   const handleFile = (file: File) => {
     if (!file.type.startsWith("image/")) {
       toast({ title: "Archivo inválido", description: "Subí una imagen.", variant: "destructive" });
       return;
     }
-    if (file.size > 3 * 1024 * 1024) {
-      toast({ title: "Imagen muy grande", description: "Máx 3MB.", variant: "destructive" });
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "Imagen muy grande", description: "Máx 5MB.", variant: "destructive" });
       return;
     }
-    const reader = new FileReader();
-    reader.onload = (e) => setImage(String(e.target?.result || ""));
-    reader.readAsDataURL(file);
+    clearImagePreview();
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
   };
 
   const reset = () => {
+    clearImagePreview();
     setName("");
     setDescription("");
     setCategory("Tortas");
     setPrice("");
     setImage("");
+    setImageFile(null);
     setTags([]);
     setTagInput("");
     setUseInHero(false);
     setUseInAbout(false);
     setEditingId(null);
-    setEditingImage("");
     if (fileRef.current) fileRef.current.value = "";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !image) {
+    if (!name.trim() || (!image && !imageFile)) {
       toast({
         title: "Faltan datos",
         description: "Nombre e imagen son obligatorios.",
@@ -179,22 +192,37 @@ const Admin = () => {
     }
 
     const finalTags = tagInput.trim() ? [...tags, tagInput.trim().slice(0, 50)] : tags;
-    const payload = {
-      name: name.trim().slice(0, 100),
-      description: description.trim().slice(0, 500),
-      category,
-      price: price.trim().slice(0, 20),
-      image,
-      tags: finalTags,
-      useInHero,
-      useInAbout,
-    };
-
     setSubmitting(true);
 
     try {
+      let imageUrl = image;
+
+      if (imageFile) {
+        const productSlug = editingId ?? slugify(name);
+        const formData = new FormData();
+        formData.append("image", imageFile);
+        const uploadResult = await uploadProductImage(productSlug, formData);
+
+        if (!uploadResult.success) {
+          throw new Error(uploadResult.error);
+        }
+
+        imageUrl = uploadResult.data.url;
+      }
+
+      const payload = {
+        name: name.trim().slice(0, 100),
+        description: description.trim().slice(0, 500),
+        category,
+        price: price.trim().slice(0, 20),
+        image: imageUrl,
+        tags: finalTags,
+        useInHero,
+        useInAbout,
+      };
+
       if (editingId) {
-        await updateCustomProduct(editingId, payload, editingImage);
+        await updateCustomProduct(editingId, payload);
         toast({ title: "Producto actualizado", description: name });
       } else {
         await addCustomProduct(payload);
@@ -297,13 +325,17 @@ const Admin = () => {
                   onClick={() => fileRef.current?.click()}
                   className="relative aspect-[4/5] max-w-xs mx-auto rounded-xl border-2 border-dashed border-border hover:border-primary transition-colors cursor-pointer overflow-hidden bg-muted/30 flex items-center justify-center"
                 >
-                  {image ? (
-                    <img src={image} alt="preview" className="w-full h-full object-cover" />
+                  {imagePreview || image ? (
+                    <img
+                      src={imagePreview || image}
+                      alt="preview"
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <div className="text-center text-muted-foreground p-6">
                       <Upload className="w-8 h-8 mx-auto mb-2" />
                       <p className="text-sm">Click para subir</p>
-                      <p className="text-xs">PNG, JPG (máx 3MB)</p>
+                      <p className="text-xs">PNG, JPG, WEBP (máx 5MB)</p>
                     </div>
                   )}
                 </div>

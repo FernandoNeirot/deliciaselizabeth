@@ -8,6 +8,7 @@ export interface Product {
   tags?: string[];
   useInHero?: boolean;
   useInAbout?: boolean;
+  createdAt?: string;
 }
 
 export const products: Product[] = [

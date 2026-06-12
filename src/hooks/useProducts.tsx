@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { products as baseProducts, type Product } from "@/data/products";
+import type { Product } from "@/data/products";
 import {
   createProduct,
   deleteProduct,
@@ -10,12 +10,19 @@ import {
   type ProductInput,
 } from "@/services/productService";
 
-export function useCustomProducts() {
+export function useCustomProducts(enabled = true) {
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(enabled);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!enabled) {
+      setProducts([]);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
     setLoading(true);
 
     const unsubscribe = subscribeToProducts(
@@ -31,31 +38,17 @@ export function useCustomProducts() {
     );
 
     return unsubscribe;
-  }, []);
+  }, [enabled]);
 
   return { products, loading, error };
-}
-
-export function useProducts() {
-  const { products: custom, loading } = useCustomProducts();
-
-  if (loading) {
-    return baseProducts;
-  }
-
-  return [...baseProducts, ...custom];
 }
 
 export async function addCustomProduct(input: ProductInput): Promise<Product> {
   return createProduct(input);
 }
 
-export async function updateCustomProduct(
-  id: string,
-  input: ProductInput,
-  previousImage?: string,
-): Promise<Product> {
-  return updateProduct(id, input, previousImage);
+export async function updateCustomProduct(id: string, input: ProductInput): Promise<Product> {
+  return updateProduct(id, input);
 }
 
 export async function removeCustomProduct(id: string): Promise<void> {

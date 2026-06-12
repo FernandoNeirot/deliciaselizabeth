@@ -4,14 +4,12 @@ import { Link } from "@/lib/router";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import ProductCard from "./ProductCard";
-import { useProducts } from "@/hooks/useProducts";
+import { useCustomProducts } from "@/hooks/useProducts";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const LatestProducts = () => {
-  const products = useProducts();
-  const customProducts = products.filter((p) => p.id.startsWith("c_"));
-  const sortedCustom = [...customProducts].sort((a, b) => b.id.localeCompare(a.id));
-  const latestProducts = sortedCustom.length > 0 ? sortedCustom.slice(0, 3) : products.slice(-3).reverse();
+  const { products, loading, error } = useCustomProducts();
+  const latestProducts = products.slice(0, 3);
   const { ref: titleRef, isVisible: titleVisible } = useScrollAnimation();
   const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation(0.1);
 
@@ -30,15 +28,33 @@ const LatestProducts = () => {
           </p>
         </div>
 
-        <div ref={gridRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {latestProducts.map((product, i) => (
-            <div
-              key={product.id}
-              className={`scroll-animate stagger-${i + 1} ${gridVisible ? "visible" : ""}`}
-            >
-              <ProductCard product={product} showPrice={false} />
+        <div ref={gridRef} className="min-h-[120px]">
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Cargando entregas...</p>
             </div>
-          ))}
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No se pudieron cargar las entregas.</p>
+            </div>
+          ) : latestProducts.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">
+                Pronto vas a ver acá nuestras últimas creaciones.
+              </p>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {latestProducts.map((product, i) => (
+                <div
+                  key={product.id}
+                  className={`scroll-animate stagger-${i + 1} ${gridVisible ? "visible" : ""}`}
+                >
+                  <ProductCard product={product} showPrice={false} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div

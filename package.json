@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "create-admin": "node scripts/create-admin-user.mjs"
+    "create-admin": "node scripts/create-admin-user.mjs",
+    "deploy:rules": "node scripts/deploy-firebase-rules.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -55,6 +56,7 @@
     "react-hook-form": "^7.78.0",
     "react-resizable-panels": "^4.11.2",
     "recharts": "^3.8.1",
+    "sharp": "^0.35.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
