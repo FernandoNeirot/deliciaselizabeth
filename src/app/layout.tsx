@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "./providers";
-import { SITE_LOCALE, SITE_NAME } from "@/lib/seo";
+import { OG_IMAGE, SITE_LOCALE, SITE_NAME } from "@/lib/seo";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,9 +15,19 @@ export const metadata: Metadata = {
     type: "website",
     locale: SITE_LOCALE,
     siteName: SITE_NAME,
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} - logo`,
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
+    images: [OG_IMAGE],
   },
   robots: {
     index: true,

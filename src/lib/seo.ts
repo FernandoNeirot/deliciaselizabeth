@@ -13,11 +13,13 @@ export const DEFAULT_KEYWORDS = [
   "Delicias Elizabeth",
 ];
 
+export const OG_IMAGE = "/og-image.png";
+
 export const OG_IMAGES = {
-  home: "/og-home.jpg",
-  productos: "/og-productos.jpg",
-  presupuesto: "/og-presupuesto.jpg",
-  valorar: "/og-valorar.jpg",
+  home: OG_IMAGE,
+  productos: OG_IMAGE,
+  presupuesto: OG_IMAGE,
+  valorar: OG_IMAGE,
 } as const;
 
 export type PageSeoInput = {
@@ -37,7 +39,7 @@ export function buildPageMetadata({
   title,
   description,
   path,
-  image = OG_IMAGES.home,
+  image = OG_IMAGE,
   keywords = DEFAULT_KEYWORDS,
   noIndex = false,
 }: PageSeoInput): Metadata {
@@ -63,7 +65,10 @@ export function buildPageMetadata({
       images: [
         {
           url: image,
-          alt: resolvedTitle,
+          width: 1200,
+          height: 630,
+          alt: `${SITE_NAME} - logo`,
+          type: "image/png",
         },
       ],
     },

@@ -10,7 +10,8 @@
     "create-admin": "node scripts/create-admin-user.mjs",
     "deploy:rules": "node scripts/deploy-firebase-rules.mjs",
     "optimize:assets": "node scripts/optimize-assets.mjs",
-    "generate:favicon": "node scripts/generate-favicon.mjs"
+    "generate:favicon": "node scripts/generate-favicon.mjs",
+    "generate:brand": "node scripts/generate-favicon.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

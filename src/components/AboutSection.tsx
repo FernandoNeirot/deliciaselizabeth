@@ -3,21 +3,11 @@
 import { Heart, Award, Clock, Sparkles } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useCustomProducts } from "@/hooks/useProducts";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
-const about1 = "/assets/about-1.webp";
-const about2 = "/assets/about-2.webp";
-const about3 = "/assets/about-3.webp";
-const about4 = "/assets/about-4.webp";
+const MAX_ABOUT_IMAGES = 4;
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+type AboutImage = { src: string; alt: string };
 
 const features = [
   {
@@ -42,39 +32,25 @@ const features = [
   },
 ];
 
-const baseImages = [
-  { src: about1, alt: "Torta de golosinas colorida" },
-  { src: about2, alt: "Torta de primera comunión" },
-  { src: about3, alt: "Torta temática Tauro con muffins" },
-  { src: about4, alt: "Torta temática Bob Esponja" },
-];
-
 const AboutSection = () => {
   const { ref: textRef, isVisible: textVisible } = useScrollAnimation();
   const { ref: imagesRef, isVisible: imagesVisible } = useScrollAnimation(0.1);
   const { products: custom } = useCustomProducts();
-  const [aboutImages, setAboutImages] = useState(baseImages);
-
-  useEffect(() => {
-    const customAbout = custom
-      .filter((p) => p.useInAbout)
-      .map((p) => ({ src: p.image, alt: p.name }));
-
-    if (customAbout.length >= 4) {
-      setAboutImages(shuffle(customAbout).slice(0, 4));
-      return;
-    }
-
-    const needed = 4 - customAbout.length;
-    setAboutImages([...customAbout, ...shuffle(baseImages).slice(0, needed)]);
-  }, [custom]);
+  const aboutImages = useMemo<AboutImage[]>(
+    () =>
+      custom
+        .filter((p) => p.useInAbout && p.image)
+        .slice(0, MAX_ABOUT_IMAGES)
+        .map((p) => ({ src: p.image, alt: p.name })),
+    [custom],
+  );
 
   const [img1, img2, img3, img4] = aboutImages;
 
   return (
     <section id="sobre-mi" className="py-20 bg-secondary/30">
       <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className={`grid gap-12 items-center ${aboutImages.length > 0 ? "lg:grid-cols-2" : ""}`}>
           {/* Content */}
           <div
             ref={textRef}
@@ -124,12 +100,14 @@ const AboutSection = () => {
           </div>
 
           {/* Image Grid */}
+          {aboutImages.length > 0 && (
           <div
             ref={imagesRef}
             className={`relative scroll-animate-right ${imagesVisible ? "visible" : ""}`}
           >
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
+                {img1 && (
                 <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-card hover:shadow-elevated transition-shadow duration-500 group">
                   <img
                     src={img1.src}
@@ -137,6 +115,8 @@ const AboutSection = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
+                )}
+                {img2 && (
                 <div className="aspect-square rounded-2xl overflow-hidden shadow-card hover:shadow-elevated transition-shadow duration-500 group">
                   <img
                     src={img2.src}
@@ -144,8 +124,10 @@ const AboutSection = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
+                )}
               </div>
               <div className="space-y-4 pt-8">
+                {img3 && (
                 <div className="aspect-square rounded-2xl overflow-hidden shadow-card hover:shadow-elevated transition-shadow duration-500 group">
                   <img
                     src={img3.src}
@@ -153,6 +135,8 @@ const AboutSection = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
+                )}
+                {img4 && (
                 <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-card hover:shadow-elevated transition-shadow duration-500 group">
                   <img
                     src={img4.src}
@@ -160,12 +144,14 @@ const AboutSection = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
+                )}
               </div>
             </div>
 
             {/* Decorative element */}
             <div className="absolute -z-10 -bottom-8 -right-8 w-64 h-64 bg-sage-light/30 rounded-full blur-3xl" />
           </div>
+          )}
         </div>
       </div>
     </section>
